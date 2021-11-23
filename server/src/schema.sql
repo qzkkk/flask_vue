@@ -1,0 +1,39 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS post;
+
+-- 创建用户表
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  level INTEGER DEFAULT 0 COMMENT '0是普通用户，1是管理员'
+);
+
+-- 创建文章表
+CREATE TABLE post (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  author_id INTEGER NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  FOREIGN KEY (author_id) REFERENCES user (id)
+);
+
+
+-- 创建标签表
+CREATE TABLE tag (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL
+);
+
+
+-- 创建文章标签表
+CREATE TABLE post_tag (
+  id  INTEGER PRIMARY KEY AUTOINCREMENT,
+  tid INTEGER NOT NULL,
+  pid INTEGER NOT NULL,
+  FOREIGN KEY (tid) REFERENCES tag (id),
+  FOREIGN KEY (pid) REFERENCES post (id)
+);
+
+-- 创建文章评论表

@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>爬虫基本工系列之--数据存储</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><p></p><div class="toc"><h3>文章目录</h3><ul><li><a href="#1__4">1. 常见的数据存储介质</a></li><li><a href="#2_CSV_15">2. CSV数据的写入与读取</a></li><ul><li><a href="#21_csv_17">2.1 什么是csv</a></li><li><a href="#22_21">2.2写入</a></li><li><a href="#23__64">2.3 读取</a></li></ul><li><a href="#3_Excel_102">3. Excel写入</a></li><ul><li><a href="#31__111">3.1 写入</a></li><li><a href="#32__147">3.2 读取</a></li></ul><li><a href="#4_word_182">4. word的写入与读取</a></li><ul><li><a href="#_190">写入</a></li><li><a href="#_210">读取</a></li></ul></ul></div><p></p>
+<hr>
+<h1><a id="1__4"></a>1. 常见的数据存储介质</h1>
+<ol>
+<li>文件</li>
+</ol>
+<blockquote>
+<p>适合存储具有时效性的数据，如股票行情，商品信息和排行榜等</p>
+</blockquote>
+<ol>
+<li>关系型数据库</li>
+<li>非关系型数据库</li>
+</ol>
+<h1><a id="2_CSV_15"></a>2. CSV数据的写入与读取</h1>
+<h2><a id="21_csv_17"></a>2.1 什么是csv</h2>
+<blockquote>
+<p>CSV是一种通用的、相对简单的文件格式，被用户、商业和科学广泛应用。最广泛的应用是在程序之间转移表格数据，而这些程序本身是在不兼容的格式上进行操作的（往往是私有的和/或无规范的格式）。因为大量程序都支持某种CSV变体，至少是作为一种可选择的输入/输出格式</p>
+</blockquote>
+<h2><a id="22_21"></a>2.2写入</h2>
+<pre><code class="prism language-python"><span class="token triple-quoted-string string">'''
+代码功能：csv文件写入
+时间：@Date: 2021-06-13 01:11:19
+'''</span>
+
+
+<span class="token keyword">import</span> csv
+
+<span class="token triple-quoted-string string">'''
+1. 若存在文件，则打开csv文件； 若不存在，则新建文件
+2. 如果不设置 newline='' ，则每行数据会隔一行空白
+
+'''</span>
+csvfile <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'csv_test.csv'</span><span class="token punctuation">,</span> <span class="token string">'w'</span><span class="token punctuation">,</span> newline<span class="token operator">=</span><span class="token string">''</span><span class="token punctuation">)</span>
+
+
+<span class="token comment"># 将文件加载到csv对象中</span>
+writer <span class="token operator">=</span> csv<span class="token punctuation">.</span>writer<span class="token punctuation">(</span>csvfile<span class="token punctuation">)</span>
+
+<span class="token comment"># 单行写入</span>
+writer<span class="token punctuation">.</span>writerow<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'姓名'</span><span class="token punctuation">,</span> <span class="token string">'年龄'</span><span class="token punctuation">,</span> <span class="token string">'电话'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+data <span class="token operator">=</span> <span class="token punctuation">[</span>
+
+    <span class="token punctuation">(</span><span class="token string">'A'</span><span class="token punctuation">,</span><span class="token string">'18'</span><span class="token punctuation">,</span><span class="token string">'10086'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">(</span><span class="token string">'B'</span><span class="token punctuation">,</span><span class="token string">'19'</span><span class="token punctuation">,</span> <span class="token string">'10010'</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span>
+
+<span class="token comment"># 多行写入</span>
+writer<span class="token punctuation">.</span>writerows<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+
+
+<span class="token comment"># 关闭csv对象</span>
+csvfile<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+</code></pre>
+<h2><a id="23__64"></a>2.3 读取</h2>
+<pre><code class="prism language-python"><span class="token triple-quoted-string string">'''
+代码功能：csv文件读取
+时间：@Date: 2021-06-13 01:12:06
+'''</span>
+
+<span class="token keyword">import</span> csv
+
+csvfile <span class="token operator">=</span> <span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'csv_test.csv'</span><span class="token punctuation">,</span> <span class="token string">'r'</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 1. 以列表的形式输出</span>
+<span class="token comment"># reader = csv.reader(csvfile)</span>
+<span class="token comment"># # print(reader)       # &lt;_csv.reader object at 0x046ED258&gt;</span>
+
+<span class="token comment"># rows = [row for row in reader]</span>
+<span class="token comment"># print(rows)             </span>
+<span class="token comment"># [['姓名', '年龄', '电话'], ['A', '18', '10086'], ['B', '19', '10010']]</span>
+
+
+
+<span class="token comment"># 2. 以字典的形式输出，第一行作为字典的键</span>
+reader <span class="token operator">=</span> csv<span class="token punctuation">.</span>DictReader<span class="token punctuation">(</span>csvfile<span class="token punctuation">)</span>
+rows <span class="token operator">=</span> <span class="token punctuation">[</span>row <span class="token keyword">for</span> row <span class="token keyword">in</span> reader<span class="token punctuation">]</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>rows<span class="token punctuation">)</span> 
+<span class="token comment"># [{'姓名': 'A', '年龄': '18', '电话': '10086'}, {'姓名': 'B', '年龄': '19', '电话': '10010'}]</span>
+
+<span class="token triple-quoted-string string">'''
+如果要获取某一行数据，在循环rows，对循环里面的项进行判断筛选符合条件的数据即可
+注意，返回的是字典还是列表
+'''</span>
+</code></pre>
+<h1><a id="3_Excel_102"></a>3. Excel写入</h1>
+<ul>
+<li>依赖包</li>
+</ul>
+<pre><code class="prism language-shell">python -m pip <span class="token function">install</span> xlwt
+python -m pip <span class="token function">install</span> xlrd
+</code></pre>
+<h2><a id="31__111"></a>3.1 写入</h2>
+<ul>
+<li>总体思路</li>
+</ul>
+<ol>
+<li>创建临时<code>Excel</code>对象</li>
+<li>添加工作表</li>
+<li>写入数据（注意索引从0开始）</li>
+<li>保存</li>
+</ol>
+<pre><code class="prism language-python"><span class="token keyword">import</span> xlwt
+
+<span class="token comment"># 新建一个Excel文件</span>
+wb <span class="token operator">=</span> xlwt<span class="token punctuation">.</span>Workbook<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 新建一个sheet</span>
+ws <span class="token operator">=</span> wb<span class="token punctuation">.</span>add_sheet<span class="token punctuation">(</span><span class="token string">'python'</span><span class="token punctuation">,</span> cell_overwrite_ok<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+
+
+
+
+<span class="token comment"># 写入数据 wb.write(行, 列， 内容 )</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        ws<span class="token punctuation">.</span>write<span class="token punctuation">(</span>i<span class="token punctuation">,</span>j<span class="token punctuation">,</span> i<span class="token operator">+</span>j<span class="token punctuation">)</span>
+
+
+<span class="token comment"># 保存文件</span>
+wb<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'file.xls'</span><span class="token punctuation">)</span>
+
+
+
+</code></pre>
+<ul>
+<li>写入的时候，还有很多骚操作可以自行百度哦</li>
+</ul>
+<h2><a id="32__147"></a>3.2 读取</h2>
+<ul>
+<li>总体思路</li>
+</ul>
+<ol>
+<li><code>xlrd</code>生成<code>Workbook</code>对象</li>
+<li>选择工作表</li>
+<li>读取信息</li>
+</ol>
+<pre><code class="prism language-python"><span class="token keyword">import</span> xlrd
+
+wb <span class="token operator">=</span> xlrd<span class="token punctuation">.</span>open_workbook<span class="token punctuation">(</span><span class="token string">'file.xls'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"工作表的总数："</span><span class="token punctuation">,</span> wb<span class="token punctuation">.</span>nsheets<span class="token punctuation">)</span> 
+
+<span class="token comment"># 1.通过索引获取工作表</span>
+<span class="token comment"># ws = wb.sheets()[0]</span>
+<span class="token comment"># ws = wb.sheet_by_index(0)</span>
+
+<span class="token comment"># 2. 通过名字获取</span>
+ws <span class="token operator">=</span> wb<span class="token punctuation">.</span>sheet_by_name<span class="token punctuation">(</span><span class="token string">'python'</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"获取到的工作表"</span><span class="token punctuation">,</span>ws<span class="token punctuation">)</span>  <span class="token comment"># 获取到的工作表 Sheet  0:&lt;python&gt;</span>
+nrows <span class="token operator">=</span> ws<span class="token punctuation">.</span>nrows
+ncols <span class="token operator">=</span> ws<span class="token punctuation">.</span>ncols
+<span class="token keyword">print</span><span class="token punctuation">(</span>nrows<span class="token punctuation">)</span>                <span class="token comment"># 7</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>ncols<span class="token punctuation">)</span>                <span class="token comment"># 5</span>
+
+<span class="token comment"># print("1行2列的数据", ws.cell(1,2)) # 1行2列的数据 number:3.0</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"1行2列的数据"</span><span class="token punctuation">,</span> ws<span class="token punctuation">.</span>cell<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>value<span class="token punctuation">)</span> <span class="token comment"># 1行2列的数据 number:3.0</span>
+<span class="token comment"># 注意行列的索引都是从0开始</span>
+</code></pre>
+<h1><a id="4_word_182"></a>4. word的写入与读取</h1>
+<ul>
+<li>依赖包</li>
+</ul>
+<pre><code class="prism language-shell">python -m pip <span class="token function">install</span> python-docx
+</code></pre>
+<h2><a id="_190"></a>写入</h2>
+<pre><code class="prism language-python"><span class="token keyword">from</span> docx <span class="token keyword">import</span> Document
+<span class="token keyword">from</span> docx<span class="token punctuation">.</span>shared <span class="token keyword">import</span> Inches
+
+document <span class="token operator">=</span> Document<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 添加标题， 0代表标题类型</span>
+document<span class="token punctuation">.</span>add_heading<span class="token punctuation">(</span><span class="token string">'python'</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+document<span class="token punctuation">.</span>add_paragraph<span class="token punctuation">(</span><span class="token string">"helloworld"</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 保存</span>
+document<span class="token punctuation">.</span>add_page_break<span class="token punctuation">(</span><span class="token punctuation">)</span>
+document<span class="token punctuation">.</span>save<span class="token punctuation">(</span><span class="token string">'./test.docx'</span><span class="token punctuation">)</span>
+</code></pre>
+<h2><a id="_210"></a>读取</h2>
+<pre><code class="prism language-python"><span class="token keyword">import</span> docx
+text <span class="token operator">=</span> <span class="token string">'\n'</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    doc <span class="token operator">=</span> docx<span class="token punctuation">.</span>Document<span class="token punctuation">(</span><span class="token string">'./test.docx'</span><span class="token punctuation">)</span>
+    paragraphs <span class="token operator">=</span> doc<span class="token punctuation">.</span>paragraphs
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>paragraphs<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 3</span>
+    <span class="token keyword">for</span> p <span class="token keyword">in</span> paragraphs<span class="token punctuation">:</span>
+        text <span class="token operator">+=</span> p<span class="token punctuation">.</span>text<span class="token operator">+</span><span class="token string">'\n'</span>
+<span class="token keyword">except</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'打开文件失败'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"text="</span><span class="token punctuation">,</span>text<span class="token punctuation">)</span>
+</code></pre>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>从零开始在一个Ubuntu服务器上部署node后端</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><p></p><div class="toc"><h3>文章目录</h3><ul><li><a href="#1__5">1. 环境的安装</a></li><ul><li><a href="#11_nodejs_7">1.1 node.js安装</a></li><li><a href="#12_yarn__28">1.2 yarn 安装</a></li></ul><li><a href="#2__43">2. 启动服务</a></li><ul><li><a href="#PM2_61">PM2</a></li></ul><li><a href="#3_the_end_90">3. the end</a></li></ul></div><p></p>
+<hr>
+<h1><a id="1__5"></a>1. 环境的安装</h1>
+<h2><a id="11_nodejs_7"></a>1.1 node.js安装</h2>
+<pre><code class="prism language-shell"><span class="token comment"># Using Ubuntu</span>
+<span class="token function">curl</span> -fsSL https://deb.nodesource.com/setup_16.x <span class="token operator">|</span> <span class="token function">sudo</span> -E <span class="token function">bash</span> -
+<span class="token function">sudo</span> <span class="token function">apt-get</span> <span class="token function">install</span> -y nodejs
+
+<span class="token comment"># Using Debian, as root</span>
+<span class="token function">curl</span> -fsSL https://deb.nodesource.com/setup_16.x <span class="token operator">|</span> <span class="token function">bash</span> -
+<span class="token function">apt-get</span> <span class="token function">install</span> -y nodejs
+
+</code></pre>
+<ul>
+<li>附<a href="https://github.com/nodesource/distributions/blob/master/README.md">github</a></li>
+<li>成功安装node</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210620162911135.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-W2WB4LOi-1624177661428)(C:\Users\dcs\Desktop\notes\study\MD\11、网站部署相关\pics\image-20210620153643502.png)]"></p>
+<h2><a id="12_yarn__28"></a>1.2 yarn 安装</h2>
+<ul>
+<li>
+<p>贴个官网[yarn](<a href="https://yarn.bootcss.com/docs/install/#debian-stable">安装 | Yarn 中文文档 (bootcss.com)</a>)</p>
+<pre><code class="prism language-shell"><span class="token function">curl</span> -sS https://dl.yarnpkg.com/debian/pubkey.gpg <span class="token operator">|</span> <span class="token function">sudo</span> apt-key <span class="token function">add</span> -
+<span class="token builtin class-name">echo</span> <span class="token string">"deb https://dl.yarnpkg.com/debian/ stable main"</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> /etc/apt/sources.list.d/yarn.list
+<span class="token function">sudo</span> <span class="token function">apt</span> update <span class="token operator">&amp;&amp;</span> <span class="token function">sudo</span> <span class="token function">apt</span> <span class="token function">install</span> <span class="token function">yarn</span>
+</code></pre>
+</li>
+<li>
+<p>执行完这三条命令之后，显示下图则成功</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20210620162902828.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-ndw9fnJK-1624177661436)(C:\Users\dcs\Desktop\notes\study\MD\11、网站部署相关\pics\image-20210620154105772.png)]"></p>
+<h1><a id="2__43"></a>2. 启动服务</h1>
+<p>至此就可以跟本地开发一样启动node 服务了</p>
+<pre><code class="prism language-shell"><span class="token function">yarn</span> 
+<span class="token function">yarn</span> start
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210620162835196.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-NVVuPLwq-1624177661440)(C:\Users\dcs\Desktop\notes\study\MD\11、网站部署相关\pics\image-20210620154437139.png)]"></p>
+<hr>
+<ul>
+<li>但是我们可以看到，他不是以后台的方式启动的，所以我们需要借助第三方的工具来后台启动</li>
+</ul>
+<h2><a id="PM2_61"></a>PM2</h2>
+<pre><code class="prism language-shell"><span class="token function">yarn</span> global <span class="token function">add</span> pm2
+</code></pre>
+<p><img src="https://img-blog.csdnimg.cn/20210620162846758.png" alt="[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-RQjBt63X-1624177661443)(C:\Users\dcs\Desktop\notes\study\MD\11、网站部署相关\pics\image-20210620160723546.png)]"></p>
+<pre><code class="prism language-shell"><span class="token comment"># 启动服务</span>
+pm2 start index.js
+
+<span class="token comment"># 监控后台启动的程序</span>
+<span class="token comment"># pm2 show + 项目名字或者id</span>
+pm2 show <span class="token number">0</span>
+
+<span class="token comment"># pm2 logs 显示日志</span>
+pm2 logs <span class="token number">0</span>
+</code></pre>
+<hr>
+<h1><a id="3_the_end_90"></a>3. the end</h1>
+<blockquote>
+<p><a href="http://dcs.pet/web/#/">结果展示</a></p>
+</blockquote>
+<blockquote>
+<p><a href="https://github.com/csDeng/rightClick">项目源码</a></p>
+</blockquote>
+</div>
+</body>
+
+</html>
